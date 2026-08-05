@@ -7,7 +7,7 @@ import mdx from '@astrojs/mdx';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://alexalvarezgallardo-github.github.io',
-  base: '/aegis-portfolio/',
+  base: '/Aegis-Portfolio/',
   vite: {
     plugins: [tailwindcss()],
   },

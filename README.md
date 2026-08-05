@@ -60,4 +60,4 @@ token the dashboard falls back to sample data.
 Pushes to `main` trigger [.github/workflows/deploy.yml](.github/workflows/deploy.yml),
 which builds and publishes to GitHub Pages at:
 
-https://alexalvarezgallardo-github.github.io/aegis-portfolio/
+https://alexalvarezgallardo-github.github.io/Aegis-Portfolio/
