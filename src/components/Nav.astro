@@ -6,6 +6,7 @@ const links = [
   { href: '#architecture', label: 'Architecture' },
   { href: '#engineering', label: 'Engineering' },
   { href: '#ai', label: 'AI Platform' },
+  { href: '#process', label: 'Process' },
   { href: '#infrastructure', label: 'Infrastructure' },
   { href: '#security', label: 'Security' },
   { href: `${base}docs/architecture`, label: 'Documentation' },
@@ -15,20 +16,20 @@ const links = [
 ---
 
 <header class="sticky top-0 z-50 border-b border-white/5 bg-background/80 backdrop-blur-xl">
-  <nav class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-    <a href={base} class="flex items-center gap-2.5">
+  <nav class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
+    <a href={base} class="flex shrink-0 items-center gap-2.5">
       <span class="flex h-8 w-8 items-center justify-center rounded-md bg-gradient-to-br from-primary to-accent font-mono text-sm font-bold text-background">
         Æ
       </span>
       <span class="font-display text-base font-semibold tracking-tight">Aegis</span>
     </a>
 
-    <div class="hidden items-center gap-6 lg:flex">
+    <div class="hidden min-w-0 shrink-0 items-center gap-x-4 2xl:flex">
       {
         links.map((link) => (
           <a
             href={link.href}
-            class="text-sm text-muted transition-colors hover:text-foreground"
+            class="whitespace-nowrap text-sm text-muted transition-colors hover:text-foreground"
           >
             {link.label}
           </a>
@@ -36,12 +37,12 @@ const links = [
       }
     </div>
 
-    <div class="flex items-center gap-3">
+    <div class="flex shrink-0 items-center gap-3">
       <a
         href="https://github.com/AlexAlvarezGallardo-GitHub"
         target="_blank"
         rel="noreferrer"
-        class="hidden items-center gap-2 rounded-md border border-white/10 px-3 py-1.5 text-sm text-foreground transition-colors hover:border-primary/60 hover:text-accent sm:flex"
+        class="hidden items-center gap-2 rounded-md border border-white/10 px-3 py-1.5 text-sm text-foreground transition-colors hover:border-primary/60 hover:text-accent md:flex"
       >
         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <path
@@ -56,6 +57,63 @@ const links = [
       >
         Explore
       </a>
+      <button
+        type="button"
+        aria-label="Toggle menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        class="flex h-9 w-9 items-center justify-center rounded-md border border-white/10 text-foreground transition-colors hover:border-primary/60 hover:text-accent 2xl:hidden"
+      >
+        <svg id="menu-open-icon" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round" />
+        </svg>
+        <svg id="menu-close-icon" class="hidden h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 6l12 12M18 6L6 18" stroke-linecap="round" />
+        </svg>
+      </button>
     </div>
   </nav>
+
+  <div id="mobile-menu" class="hidden border-t border-white/5 bg-background/95 backdrop-blur-xl 2xl:hidden">
+    <div class="mx-auto max-w-6xl space-y-1 px-4 py-4 sm:px-6">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class="block rounded-md px-3 py-2 text-sm text-muted transition-colors hover:bg-card hover:text-foreground"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </div>
+  </div>
 </header>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>('button[aria-controls="mobile-menu"]');
+  const menu = document.getElementById('mobile-menu');
+  const openIcon = document.getElementById('menu-open-icon');
+  const closeIcon = document.getElementById('menu-close-icon');
+
+  if (button && menu) {
+    const setOpen = (open: boolean) => {
+      menu.classList.toggle('hidden', !open);
+      button.setAttribute('aria-expanded', String(open));
+      openIcon?.classList.toggle('hidden', open);
+      closeIcon?.classList.toggle('hidden', !open);
+    };
+
+    button.addEventListener('click', () => {
+      setOpen(menu.classList.contains('hidden'));
+    });
+
+    menu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => setOpen(false));
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 1536) setOpen(false);
+    });
+  }
+</script>
