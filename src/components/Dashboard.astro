@@ -4,25 +4,14 @@ import { getDashboardData } from '../lib/github';
 
 const data = await getDashboardData();
 
-const sample = {
-  commits: 120,
-  pulls: 40,
-  issues: 8,
-  releases: [{ tag: 'v0.1.0', name: 'Initial release' }],
-};
-
-const commits = data.live ? data.commits : sample.commits;
-const pulls = data.live ? data.pulls : sample.pulls;
-const issues = data.live ? data.openIssues || data.issues : sample.issues;
-const releases =
-  data.live && data.releases.length ? data.releases : sample.releases;
-
-const stats = [
-  { label: 'Commits', value: commits },
-  { label: 'Pull Requests', value: pulls },
-  { label: 'Open Issues', value: issues },
-  { label: 'Stars', value: data.repo.stars },
-];
+const stats = data.live
+  ? [
+      { label: 'Commits', value: data.commits },
+      { label: 'Pull Requests', value: data.pulls },
+      { label: 'Open Issues', value: data.openIssues || data.issues },
+      { label: 'Stars', value: data.repo.stars },
+    ]
+  : [];
 
 const statusColor = (conclusion: string) => {
   if (conclusion === 'success') return 'text-emerald-400 border-emerald-400/30 bg-emerald-400/10';
@@ -51,7 +40,7 @@ const statusColor = (conclusion: string) => {
         <span class="h-1.5 w-1.5 rounded-full bg-current"></span>
         {data.live
           ? 'Connected to GitHub API'
-          : 'Sample data — live stats connect when the token is configured'}
+          : 'Metrics temporarily unavailable'}
       </span>
       <a
         href={data.repo.htmlUrl}
@@ -65,14 +54,23 @@ const statusColor = (conclusion: string) => {
 
     <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {
-        stats.map((stat) => (
-          <div class="reveal rounded-xl border border-white/5 bg-card p-6">
-            <p class="font-mono text-xs uppercase tracking-widest text-muted">{stat.label}</p>
-            <p class="counter mt-2 font-display text-4xl font-bold text-foreground" data-target={stat.value}>
-              0
+        data.live ? (
+          stats.map((stat) => (
+            <div class="reveal rounded-xl border border-white/5 bg-card p-6">
+              <p class="font-mono text-xs uppercase tracking-widest text-muted">{stat.label}</p>
+              <p class="counter mt-2 font-display text-4xl font-bold text-foreground" data-target={stat.value}>
+                0
+              </p>
+            </div>
+          ))
+        ) : (
+          <div class="rounded-xl border border-white/5 bg-card p-6 sm:col-span-2 lg:col-span-4">
+            <p class="text-sm text-muted">
+              Metrics are temporarily unavailable. They appear here as soon as the dashboard can
+              reach the GitHub API.
             </p>
           </div>
-        ))
+        )
       }
     </div>
 
@@ -81,30 +79,34 @@ const statusColor = (conclusion: string) => {
         <h3 class="font-display text-sm font-semibold uppercase tracking-widest text-foreground">
           Latest releases
         </h3>
-        <ul class="mt-4 divide-y divide-white/5">
-          {
-            releases.map((release) => (
-              <li class="flex items-center justify-between py-3">
-                <div>
-                  <a
-                    href={data.live ? release.url : data.repo.htmlUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    class="font-mono text-sm text-accent transition-colors hover:text-foreground"
-                  >
-                    {release.tag}
-                  </a>
-                  <p class="text-sm text-muted">{release.name}</p>
-                </div>
-                {data.live && (
+        {data.live && data.releases.length ? (
+          <ul class="mt-4 divide-y divide-white/5">
+            {
+              data.releases.map((release) => (
+                <li class="flex items-center justify-between py-3">
+                  <div>
+                    <a
+                      href={release.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      class="font-mono text-sm text-accent transition-colors hover:text-foreground"
+                    >
+                      {release.tag}
+                    </a>
+                    <p class="text-sm text-muted">{release.name}</p>
+                  </div>
                   <span class="font-mono text-xs text-muted">
                     {release.date ? release.date.slice(0, 10) : ''}
                   </span>
-                )}
-              </li>
-            ))
-          }
-        </ul>
+                </li>
+              ))
+            }
+          </ul>
+        ) : (
+          <p class="mt-4 text-sm text-muted">
+            Releases are shown here when connected to the GitHub API.
+          </p>
+        )}
       </div>
 
       <div class="reveal rounded-xl border border-white/5 bg-card p-6">

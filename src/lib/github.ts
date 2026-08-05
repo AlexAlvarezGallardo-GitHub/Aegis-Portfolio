@@ -59,8 +59,6 @@ export interface DashboardData {
 }
 
 export async function getDashboardData(): Promise<DashboardData> {
-  const hasToken = Boolean(token());
-
   const [repoRes, commitsRes, pullsRes, issuesRes, releasesRes, runsRes, langsRes] =
     await Promise.all([
       gh(''),
@@ -110,7 +108,7 @@ export async function getDashboardData(): Promise<DashboardData> {
     .slice(0, 5);
 
   return {
-    live: hasToken,
+    live: repoRes.ok && commitsRes.ok && pullsRes.ok,
     repo: {
       stars: repo?.stargazers_count ?? 0,
       forks: repo?.forks_count ?? 0,
