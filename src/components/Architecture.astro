@@ -1,0 +1,176 @@
+---
+import Section from './Section.astro';
+import Mermaid from './Mermaid.astro';
+import { services, techStack } from '../data/site';
+
+const topo = `
+graph TB
+    ANG["Angular 22 SPA"]
+    BFF["BFF Service\\nRedis session store"]
+    GW["API Gateway"]
+    ID["Identity Service"]
+    WA["Wallet Service"]
+    PAY["Payment Service"]
+    KAFKA["Kafka\\nEvent Bus"]
+    FR["Fraud Service"]
+    NO["Notification Service"]
+    AU["Audit Service"]
+
+    ANG --> BFF
+    BFF --> GW
+    GW --> ID & WA & PAY
+    ID & WA & PAY --> KAFKA
+    KAFKA --> FR & NO & AU
+
+    style ANG fill:#18181b,stroke:#d4af37
+    style BFF fill:#18181b,stroke:#d4af37
+    style GW fill:#18181b,stroke:#d4af37
+    style KAFKA fill:#111113,stroke:#e6c15a,stroke-width:2px
+`;
+
+const hexagonal = `
+flowchart LR
+    subgraph Web["Web Layer"]
+        direction LR
+        REST["REST Controllers"]
+        ADV["Exception Handlers"]
+    end
+    subgraph APP["Application Layer"]
+        direction LR
+        SRV["Use Case Services"]
+        DTO["DTOs"]
+        MAP["Mappers"]
+    end
+    subgraph INF["Infrastructure Layer"]
+        direction LR
+        JPA["JPA Persistence"]
+        KAFKA_AD["Kafka Adapters"]
+        SEC["Security Config"]
+    end
+    subgraph DOM["Domain Layer"]
+        direction LR
+        ENT["Entities & Value Objects"]
+        EVT["Domain Events"]
+        PRT["Port Interfaces"]
+    end
+
+    REST --> SRV
+    ADV --> SRV
+    JPA -.->|implements| PRT
+    KAFKA_AD -.->|implements| PRT
+    SRV -.->|depends on| PRT
+    SRV --> MAP --> DTO
+    DOM -.->|zero framework deps| DOM
+`;
+
+const outbox = `
+sequenceDiagram
+    participant API as REST API
+    participant SVC as Use Case Service
+    participant DB as PostgreSQL
+    participant SCH as Outbox Relay Scheduler
+    participant KAF as Kafka
+
+    API->>SVC: Command (e.g. Deposit)
+    SVC->>DB: ACID transaction
+    Note over SVC,DB: Aggregate + domain event\\nwritten to outbox_events
+    SVC-->>API: 201 Response
+    SCH->>DB: Poll unpublished events
+    SCH->>KAF: Publish event
+    KAF-->>SCH: Ack
+    SCH->>DB: Status = PUBLISHED
+`;
+
+const statusColor = (status: string) =>
+  status === 'Built'
+    ? 'border-emerald-400/30 bg-emerald-400/10 text-emerald-400'
+    : 'border-accent/30 bg-accent/10 text-accent';
+---
+
+<Section
+  id="architecture"
+  eyebrow="Architecture"
+  title="How it is architected"
+  subtitle="Six services, one event backbone, zero shared databases. Each bounded context owns its data and communicates through Kafka. This is the architecture of the real, running platform."
+>
+  <div class="mt-10 grid gap-8 lg:grid-cols-[1fr_380px]">
+    <div class="reveal">
+      <Mermaid code={topo} title="System topology" />
+    </div>
+
+    <div class="reveal rounded-xl border border-white/5 bg-card p-6">
+      <h3 class="font-display text-sm font-semibold uppercase tracking-widest text-foreground">
+        Services
+      </h3>
+      <ul class="mt-4 space-y-3">
+        {
+          services.map((s) => (
+            <li class="flex items-center justify-between gap-3">
+              <span class="text-sm text-foreground">{s.name}</span>
+              <span
+                class:list={[
+                  'rounded-full border px-2.5 py-0.5 font-mono text-xs',
+                  statusColor(s.status),
+                ]}
+              >
+                {s.status}
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+
+  <div class="mt-8 grid gap-8 lg:grid-cols-2">
+    <div class="reveal">
+      <Mermaid code={hexagonal} title="Hexagonal architecture — ports & adapters" />
+    </div>
+    <div class="reveal">
+      <Mermaid code={outbox} title="Transactional outbox — reliable event delivery" />
+    </div>
+  </div>
+
+  <div class="reveal mt-12">
+    <h3 class="font-display text-sm font-semibold uppercase tracking-widest text-foreground">
+      Core design rules
+    </h3>
+    <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="rounded-xl border border-white/5 bg-card p-5">
+        <p class="font-mono text-xs uppercase tracking-widest text-primary">01</p>
+        <p class="mt-2 text-sm font-semibold text-foreground">Domain purity</p>
+        <p class="mt-1 text-sm text-muted">Pure Java, zero framework imports. Enforced by Checkstyle.</p>
+      </div>
+      <div class="rounded-xl border border-white/5 bg-card p-5">
+        <p class="font-mono text-xs uppercase tracking-widest text-primary">02</p>
+        <p class="mt-2 text-sm font-semibold text-foreground">Data ownership</p>
+        <p class="mt-1 text-sm text-muted">Each bounded context owns its database. No shared schemas.</p>
+      </div>
+      <div class="rounded-xl border border-white/5 bg-card p-5">
+        <p class="font-mono text-xs uppercase tracking-widest text-primary">03</p>
+        <p class="mt-2 text-sm font-semibold text-foreground">Async by default</p>
+        <p class="mt-1 text-sm text-muted">Events over synchronous calls. Outbox guarantees delivery.</p>
+      </div>
+      <div class="rounded-xl border border-white/5 bg-card p-5">
+        <p class="font-mono text-xs uppercase tracking-widest text-primary">04</p>
+        <p class="mt-2 text-sm font-semibold text-foreground">Contract-first</p>
+        <p class="mt-1 text-sm text-muted">OpenAPI and event schemas are specified before code.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="reveal mt-10">
+    <h3 class="font-display text-sm font-semibold uppercase tracking-widest text-foreground">
+      Technology
+    </h3>
+    <div class="mt-4 flex flex-wrap gap-2">
+      {
+        techStack.map((t) => (
+          <span class="rounded-full border border-white/10 bg-card px-3 py-1 text-sm text-muted">
+            <span class="font-mono text-accent">{t.name}</span> · {t.role}
+          </span>
+        ))
+      }
+    </div>
+  </div>
+</Section>

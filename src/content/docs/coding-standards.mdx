@@ -1,0 +1,38 @@
+---
+title: Coding Standards
+description: Conventions, checkstyle rules and automatic architecture enforcement.
+order: 4
+---
+
+Aegis enforces its architecture **automatically**, not by discipline alone. A shared constitution and Checkstyle rules make violations fail the build.
+
+## Architecture enforcement
+
+- **Hexagonal package structure** is mandatory: `domain/`, `application/`, `infrastructure/`, `web/`.
+- **Domain purity** — the domain layer may not import Spring, JPA or any framework class.
+- **Controllers are thin** — no business logic, no swagger annotations (the OpenAPI contract lives in YAML).
+- **DTOs are records** — immutable by default.
+- **Value objects are records** — domain types carry their own validation.
+
+## Java conventions
+
+- Java 21 — records, sealed interfaces, pattern matching where applicable.
+- `@Entity` only in the infrastructure layer.
+- `@Value` for immutable Spring beans.
+- No `System.out` — use structured logging.
+
+## Conventions enforced in CI
+
+Every pull request triggers four parallel quality gates:
+
+1. **Branch naming** — enforces `<type>/<number>-<short-description>`.
+2. **Commit messages** — validates the conventional commit format.
+3. **PR title** — ensures clear, structured descriptions.
+4. **PR body** — verifies summary, changes and testing documentation.
+
+## Git workflow (GitHub Flow)
+
+- `main` is the only long-lived branch and must always be deployable.
+- Feature branches from `main`, merged via pull requests.
+- Squash merge to keep history clean.
+- Every issue is referenced: `Closes #42`.

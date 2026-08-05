@@ -1,0 +1,28 @@
+---
+title: Architecture Decision Records
+description: Every significant decision documented with context, decision and consequences.
+order: 2
+---
+
+Every significant technical decision in Aegis is recorded as an **Architecture Decision Record (ADR)** following the standard template: **Context → Decision → Consequences**, plus alternatives considered.
+
+## Current records
+
+| ADR | Decision |
+|-----|----------|
+| ADR-001 | Fraud rules configuration — rules as data, versioned and hot-reloadable |
+| ADR-002 | Kafka topic configuration — naming, partitions and retention per topic type |
+| ADR-003 | Defer Kubernetes / Helm — local-first delivery until platform maturity |
+
+## Why ADRs matter
+
+ADRs capture the **reasoning** behind a decision, not just the outcome. Six months later, anyone on the team can answer *why* something was done a particular way — without re-litigating the decision.
+
+Each record includes:
+
+- **Context** — the forces at play when the decision was made.
+- **Decision** — what was chosen, precisely.
+- **Consequences** — the trade-offs accepted, both positive and negative.
+- **Alternatives** — what else was considered and why it was rejected.
+
+The list grows with the platform. New records are added as the architecture evolves.

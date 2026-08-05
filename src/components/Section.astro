@@ -1,0 +1,28 @@
+---
+interface Props {
+  id: string;
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  className?: string;
+}
+
+const { id, eyebrow, title, subtitle, className = '' } = Astro.props;
+---
+
+<section id={id} class={`scroll-mt-24 ${className}`}>
+  <div class="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+    <div class="reveal max-w-3xl">
+      {eyebrow && (
+        <p class="mb-3 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+          {eyebrow}
+        </p>
+      )}
+      <h2 class="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+        {title}
+      </h2>
+      {subtitle && <p class="mt-4 text-lg leading-relaxed text-muted">{subtitle}</p>}
+    </div>
+    <slot />
+  </div>
+</section>

@@ -1,0 +1,46 @@
+---
+title: Architecture
+description: How Aegis is architected — hexagonal boundaries, event-driven communication and the outbox pattern.
+order: 1
+---
+
+Aegis is a **microservices platform with strict architectural boundaries**. Every service follows hexagonal (ports & adapters) architecture, owns its data, and communicates asynchronously through Apache Kafka.
+
+## Layered architecture
+
+Each service is split into four layers with a strict inward dependency direction:
+
+- **Domain** — Pure Java 21. Zero framework annotations, zero imports from Spring or JPA. Entities, value objects (records), enums, domain events and port interfaces. This layer is completely framework-agnostic.
+- **Application** — Use case implementations, DTOs, mappers. Depends only on domain ports.
+- **Infrastructure** — JPA adapters, Kafka producers/consumers, security configuration, outbox scheduler.
+- **Web** — REST controllers, `@RestControllerAdvice` exception handlers, request filters.
+
+Dependency inversion means infrastructure *implements* ports defined in the domain — the business logic never imports a framework class.
+
+## Event-driven communication
+
+- **Primary channel**: Apache Kafka with `aegis.<service>.<event>` topic naming.
+- **Well-versioned schemas**: JSON Schema with explicit `schemaVersion`.
+- **Synchronous calls**: permitted only through the API Gateway with circuit breakers.
+- **Bounded contexts**: each service owns its data — no shared databases, no direct access.
+
+## Transactional outbox
+
+Guaranteed **at-least-once event delivery** without distributed transactions:
+
+1. Aggregate operation + domain event are persisted in a **single ACID transaction**.
+2. The event is written to an `outbox_events` table alongside domain data.
+3. `OutboxRelayScheduler` polls unpublished events and forwards them to Kafka.
+4. On Kafka acknowledgment, the event status updates to `PUBLISHED`.
+
+This gives exactly-once-persisted, at-least-once-delivered semantics — the standard pattern for reliable event publishing in financial systems.
+
+## Delivery model
+
+Infrastructure as Code, GitOps delivery, immutable deployments:
+
+```
+Developer → GitHub → GitHub Actions → GHCR → GitOps Repo → Argo CD → Kubernetes
+```
+
+Argo CD owns deployment. GitHub Actions only builds software and updates the GitOps repository. No manual `kubectl apply` exists anywhere.

@@ -1,0 +1,87 @@
+---
+import Section from './Section.astro';
+
+const modules = [
+  {
+    name: 'Wallet Management',
+    description: 'Digital wallets with real-time balances, immutable ledgers and idempotent operations.',
+    icon: 'W',
+  },
+  {
+    name: 'Payments',
+    description: 'Secure payment flows with reconciliation, idempotency and 3-D Secure readiness.',
+    icon: 'P',
+  },
+  {
+    name: 'Fraud Detection',
+    description: 'Real-time risk scoring and rules engine protecting every transaction.',
+    icon: 'F',
+  },
+  {
+    name: 'Notifications',
+    description: 'Email, SMS and push delivery with templating and tracking.',
+    icon: 'N',
+  },
+  {
+    name: 'Audit',
+    description: 'Immutable, cryptographically-linked audit trail for every financial event.',
+    icon: 'A',
+  },
+  {
+    name: 'Reporting',
+    description: 'Analytics, dashboards and exportable insights for operations and finance.',
+    icon: 'R',
+  },
+];
+
+const capabilities = [
+  'Multi-tenant financial platform',
+  'Event-driven, asynchronous architecture',
+  'Idempotency and ledger integrity by design',
+  'Role-based access control',
+  'Enterprise observability built in',
+  'GitOps delivery with zero manual deploys',
+];
+---
+
+<Section
+  id="platform"
+  eyebrow="Platform"
+  title="What is Aegis?"
+  subtitle="A digital payment platform designed for fintech scale and delivered with enterprise rigor. Before the technology — the product."
+>
+  <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      modules.map((m, i) => (
+        <div
+          class="reveal group rounded-xl border border-white/5 bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-[0_8px_30px_rgba(0,0,0,0.4)]"
+          style={`transition-delay: ${i * 60}ms`}
+        >
+          <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 font-mono text-lg font-bold text-accent">
+            {m.icon}
+          </div>
+          <h3 class="mt-4 font-display text-lg font-semibold text-foreground">{m.name}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted">{m.description}</p>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="reveal mt-12 rounded-xl border border-white/5 bg-surface/60 p-8">
+    <h3 class="font-display text-sm font-semibold uppercase tracking-widest text-foreground">
+      Designed for the people who run money
+    </h3>
+    <ul class="mt-4 grid gap-3 sm:grid-cols-2">
+      {
+        capabilities.map((c) => (
+          <li class="flex items-start gap-2.5 text-sm text-muted">
+            <svg class="mt-0.5 h-4 w-4 shrink-0 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            {c}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</Section>

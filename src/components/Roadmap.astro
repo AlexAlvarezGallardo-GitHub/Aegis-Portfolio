@@ -1,0 +1,52 @@
+---
+import Section from './Section.astro';
+import { roadmap } from '../data/site';
+
+const colorFor = (category: string) => {
+  switch (category) {
+    case 'Completed':
+      return 'text-emerald-400 border-emerald-400/30';
+    case 'In Progress':
+      return 'text-accent border-accent/30';
+    case 'Planned':
+      return 'text-sky-400 border-sky-400/30';
+    default:
+      return 'text-muted border-white/10';
+  }
+};
+---
+
+<Section
+  id="roadmap"
+  eyebrow="Roadmap"
+  title="Continuous evolution"
+  subtitle="A platform is never finished. Here is what has shipped, what is in flight, and where Aegis is heading."
+>
+  <div class="mt-10 grid gap-6 sm:grid-cols-2">
+    {
+      roadmap.map((group, i) => (
+        <div
+          class="reveal rounded-xl border border-white/5 bg-card p-6"
+          style={`transition-delay: ${(i % 2) * 80}ms`}
+        >
+          <div class="flex items-center justify-between">
+            <h3 class="font-display text-lg font-semibold text-foreground">{group.category}</h3>
+            <span class:list={['rounded-full border px-2.5 py-0.5 font-mono text-xs', colorFor(group.category)]}>
+              {group.items.length}
+            </span>
+          </div>
+          <ul class="mt-4 space-y-2.5">
+            {
+              group.items.map((item) => (
+                <li class="flex items-start gap-2.5 text-sm text-muted">
+                  <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary/60"></span>
+                  {item}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+</Section>

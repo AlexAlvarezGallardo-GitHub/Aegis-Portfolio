@@ -1,0 +1,51 @@
+---
+import Section from './Section.astro';
+import { infrastructure } from '../data/site';
+---
+
+<Section
+  id="infrastructure"
+  eyebrow="Infrastructure"
+  title="Production readiness"
+  subtitle="Immutable deployments, GitOps delivery and a secure software supply chain. No manual deployments exist — everything is reproducible from Git."
+>
+  <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    {
+      infrastructure.map((item, i) => (
+        <div
+          class="reveal rounded-xl border border-white/5 bg-card p-5 transition-colors hover:border-primary/40"
+          style={`transition-delay: ${(i % 4) * 60}ms`}
+        >
+          <h3 class="font-display text-sm font-semibold text-foreground">{item.name}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted">{item.tool}</p>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="reveal mt-12 rounded-xl border border-white/5 bg-surface/60 p-8">
+    <h3 class="font-display text-sm font-semibold uppercase tracking-widest text-foreground">
+      Delivery model
+    </h3>
+    <div class="mt-6 flex flex-wrap items-center gap-3 font-mono text-xs text-muted">
+      <span class="rounded-md border border-white/10 bg-card px-3 py-1.5">Developer</span>
+      <span class="text-accent">→</span>
+      <span class="rounded-md border border-white/10 bg-card px-3 py-1.5">GitHub</span>
+      <span class="text-accent">→</span>
+      <span class="rounded-md border border-white/10 bg-card px-3 py-1.5">GitHub Actions</span>
+      <span class="text-accent">→</span>
+      <span class="rounded-md border border-white/10 bg-card px-3 py-1.5">GHCR</span>
+      <span class="text-accent">→</span>
+      <span class="rounded-md border border-white/10 bg-card px-3 py-1.5">GitOps Repo</span>
+      <span class="text-accent">→</span>
+      <span class="rounded-md border border-primary/40 bg-primary/10 px-3 py-1.5 text-accent">Argo CD</span>
+      <span class="text-accent">→</span>
+      <span class="rounded-md border border-white/10 bg-card px-3 py-1.5">Kubernetes</span>
+    </div>
+    <p class="mt-5 text-sm leading-relaxed text-muted">
+      The CI pipeline builds and validates. The CD pipeline never deploys directly — it updates
+      the GitOps repository and Argo CD synchronizes Kubernetes with the desired state. Each
+      environment (dev / pre / stage / prod) is a thin overlay over a shared base.
+    </p>
+  </div>
+</Section>

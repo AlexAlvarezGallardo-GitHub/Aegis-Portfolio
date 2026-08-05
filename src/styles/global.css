@@ -1,0 +1,164 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #09090b;
+  --color-surface: #111113;
+  --color-card: #18181b;
+  --color-primary: #d4af37;
+  --color-accent: #e6c15a;
+  --color-foreground: #fafafa;
+  --color-muted: #a1a1aa;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Geist", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background-color: color-mix(in srgb, var(--color-primary) 30%, transparent);
+}
+
+/* Subtle background grid used behind hero / sections */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.03) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+/* Soft gold glow used behind hero and section headers */
+.glow-primary {
+  background: radial-gradient(
+    circle at center,
+    rgb(212 175 55 / 0.14),
+    transparent 60%
+  );
+}
+
+/* Mermaid diagrams on dark background */
+.mermaid {
+  background: var(--color-surface);
+  border: 1px solid rgb(255 255 255 / 0.06);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  overflow-x: auto;
+}
+
+/* Reveal-on-scroll animation (Motion One driven) */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Thin gold focus ring for accessibility */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Prose styling for rendered MDX documentation */
+.prose-aegis {
+  color: var(--color-muted);
+  line-height: 1.75;
+}
+.prose-aegis h1,
+.prose-aegis h2,
+.prose-aegis h3,
+.prose-aegis h4 {
+  color: var(--color-foreground);
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-top: 2rem;
+}
+.prose-aegis h1 {
+  font-size: 2rem;
+}
+.prose-aegis h2 {
+  font-size: 1.5rem;
+  border-bottom: 1px solid rgb(255 255 255 / 0.08);
+  padding-bottom: 0.5rem;
+}
+.prose-aegis h3 {
+  font-size: 1.125rem;
+}
+.prose-aegis a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prose-aegis code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: rgb(255 255 255 / 0.06);
+  border: 1px solid rgb(255 255 255 / 0.08);
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.375rem;
+}
+.prose-aegis pre {
+  background: var(--color-surface);
+  border: 1px solid rgb(255 255 255 / 0.08);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 1.25rem 0;
+}
+.prose-aegis pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+.prose-aegis blockquote {
+  border-left: 3px solid var(--color-primary);
+  padding-left: 1rem;
+  color: var(--color-foreground);
+  font-style: italic;
+}
+.prose-aegis table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  font-size: 0.9rem;
+}
+.prose-aegis th,
+.prose-aegis td {
+  border: 1px solid rgb(255 255 255 / 0.08);
+  padding: 0.6rem 0.75rem;
+  text-align: left;
+}
+.prose-aegis th {
+  background: var(--color-surface);
+  color: var(--color-foreground);
+  font-family: var(--font-display);
+}
+.prose-aegis ul,
+.prose-aegis ol {
+  padding-left: 1.25rem;
+}
+.prose-aegis ul {
+  list-style: disc;
+}
+.prose-aegis ol {
+  list-style: decimal;
+}
+.prose-aegis li {
+  margin: 0.25rem 0;
+}

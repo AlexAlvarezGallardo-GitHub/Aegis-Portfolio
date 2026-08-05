@@ -1,0 +1,57 @@
+---
+title: Development Setup
+description: How to run the full Aegis platform locally.
+order: 5
+---
+
+The platform is designed for **production-like local development** — the same container images and orchestration patterns you would run in production.
+
+## Option A — Docker Compose with hot reload
+
+```bash
+infra\build-and-run.bat dev
+```
+
+Starts the full stack (infrastructure + apps) with hot reload:
+
+- **Frontend**: `ng serve --poll 1000`
+- **Backend**: `spring-boot-devtools`
+
+## Option B — Manual
+
+```bash
+# 1. Start infrastructure (PostgreSQL, Kafka, ZooKeeper, Redis)
+docker compose -f infra/docker-compose.yml up -d
+
+# 2. Build all backend modules
+cd backend
+mvn clean install -DskipTests
+
+# 3. Start Identity Service (terminal 1)
+mvn spring-boot:run -pl aegis-identity-service -Dspring-boot.run.profiles=dev
+
+# 4. Start BFF Service (terminal 2)
+mvn spring-boot:run -pl aegis-bff-service -Dspring-boot.run.profiles=dev
+
+# 5. Start the Angular frontend (terminal 3)
+cd frontend/aegis-frontend
+npm install && npm run start
+
+# 6. Run the full test suite (requires Docker — Testcontainers)
+cd backend && mvn clean verify
+```
+
+## Access points
+
+| Component | URL |
+|-----------|-----|
+| Angular Frontend | http://localhost:4200 |
+| BFF Service | http://localhost:8082 |
+| Identity Service | http://localhost:8081 |
+| Wallet Service | http://localhost:8083 |
+| Kafka UI | http://localhost:8090 |
+| Database Admin | http://localhost:3000 |
+
+## Kubernetes (optional)
+
+The local Kubernetes environment uses minikube with Argo CD. See the deployment guide for the GitOps flow.

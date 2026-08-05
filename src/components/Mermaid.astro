@@ -1,0 +1,13 @@
+---
+interface Props {
+  code: string;
+  title?: string;
+}
+
+const { code, title } = Astro.props;
+---
+
+{
+  title && <p class="mb-2 font-mono text-xs uppercase tracking-widest text-muted">{title}</p>
+}
+<pre class="mermaid">{code}</pre>

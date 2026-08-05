@@ -1,0 +1,41 @@
+---
+title: Deployment Guide
+description: The GitOps delivery model — how code becomes running infrastructure.
+order: 6
+---
+
+Aegis ships through a **GitOps delivery model**: no deployment executes a direct command. Git is the single source of truth, and Argo CD continuously reconciles Kubernetes with the desired state.
+
+## Pipeline
+
+1. **CI (GitHub Actions)** — builds, validates, scans and tests every change. On merge to `main`: full build, integration tests, Docker build, security scanning, SBOM generation, Cosign signing, push to GHCR.
+2. **CD (GitOps)** — GitHub Actions updates the GitOps repository (Helm chart versions, image tags). Argo CD detects the change and synchronizes the cluster.
+3. **Verification** — health checks via Spring Actuator, rollback if synchronization fails.
+
+## Helm structure
+
+Every service has its own chart with `base/` + environment overlays:
+
+```
+charts/identity
+charts/wallet
+charts/frontend
+charts/bff
+```
+
+Each chart contains a Deployment, Service, ConfigMap, Secrets and Ingress. Overlays (`dev`, `pre`, `stage`, `prod`) override only environment-specific values: replicas, resources, environment variables, autoscaling, ingress, limits.
+
+## Environment strategy
+
+```
+DEV → PRE → STAGE → PROD
+```
+
+Each environment has isolated configuration. Immutable image tags guarantee that what was tested is what ships.
+
+## Security of the pipeline
+
+- Secrets are never hardcoded — scanned before commit (Gitleaks).
+- Images are signed (Cosign) — only trusted artifacts deploy.
+- Vulnerabilities are blocked at build time (Trivy).
+- A software bill of materials (SBOM) is generated for every image (Syft).

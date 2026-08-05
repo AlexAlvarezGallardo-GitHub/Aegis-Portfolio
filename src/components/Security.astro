@@ -1,0 +1,45 @@
+---
+import Section from './Section.astro';
+import { security } from '../data/site';
+---
+
+<Section
+  id="security"
+  eyebrow="Security"
+  title="Enterprise security mindset"
+  subtitle="Security is integrated into the pipeline, not bolted on. From session hardening to signed container images, every layer is defended."
+>
+  <div class="mt-10 grid gap-4 sm:grid-cols-2">
+    {
+      security.map((item, i) => (
+        <div
+          class="reveal flex items-start gap-3 rounded-xl border border-white/5 bg-card p-5"
+          style={`transition-delay: ${(i % 4) * 60}ms`}
+        >
+          <svg class="mt-0.5 h-5 w-5 shrink-0 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path
+              d="M12 2l8 3.5v5.5c0 5-3.4 9.5-8 11-4.6-1.5-8-6-8-11V5.5L12 2z"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span class="text-sm text-foreground">{item}</span>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="reveal mt-10 rounded-xl border border-white/5 bg-surface/60 p-8">
+    <h3 class="font-display text-sm font-semibold uppercase tracking-widest text-foreground">
+      Supply chain — verified at every step
+    </h3>
+    <p class="mt-4 font-mono text-sm leading-loose text-muted">
+      {`Gitleaks · CodeQL · Trivy · Syft (SBOM) · Cosign (signed images) · Dependabot / Renovate`}
+    </p>
+    <p class="mt-4 text-sm leading-relaxed text-muted">
+      Secrets are scanned before commit. Dependencies are scanned in CI. Images are scanned,
+      signed and immutable. Only trusted artifacts are ever deployed.
+    </p>
+  </div>
+</Section>

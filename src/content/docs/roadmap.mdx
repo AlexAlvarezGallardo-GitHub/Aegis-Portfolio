@@ -1,0 +1,49 @@
+---
+title: Roadmap
+description: What has shipped, what is in flight, and where the platform is going.
+order: 7
+---
+
+Aegis evolves continuously. This page tracks the platform's trajectory.
+
+## Completed
+
+- Identity Service — full hexagonal stack, 100% domain test coverage
+- BFF Service — session security, JWT proxy, CSRF protection
+- Wallet Service — digital wallets, idempotent ledger operations
+- Transactional outbox on Kafka
+- CI/CD with four parallel quality gates
+- GitOps foundation with Argo CD
+- Helm charts and environment overlays
+- Observability stack — OpenTelemetry, Tempo, Prometheus, Loki, Grafana
+- Supply-chain security — Trivy, CodeQL, Cosign, Syft, Dependabot
+
+## In progress
+
+- Fraud detection rules engine
+- Notification delivery
+- Audit trail hardening
+
+## Planned
+
+- Payment processing and 3-D Secure
+- API Gateway with rate limiting and circuit breakers
+- Argo Rollouts — blue/green and canary deployments
+- KEDA autoscaling
+- Policy as Code — OPA Gatekeeper
+
+## Future vision
+
+- External Secrets / HashiCorp Vault
+- DORA metrics and ephemeral environments
+- AI-native agent orchestration at runtime
+
+## Principles that never change
+
+- Infrastructure as Code.
+- GitOps as the deployment model.
+- Immutable deployments.
+- Automated CI/CD.
+- Secure software supply chain.
+- Full observability.
+- Everything version controlled.

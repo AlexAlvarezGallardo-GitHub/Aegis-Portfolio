@@ -1,0 +1,42 @@
+---
+title: API Reference
+description: Spec-first OpenAPI 3 contracts for every Aegis service.
+order: 3
+---
+
+Aegis uses a **spec-first** approach: every API is defined as an **OpenAPI 3 contract** before any code is written. Contracts live in `specs/<feature>/contracts/` and drive both implementation and client generation.
+
+## Conventions
+
+- Base path: `/api/v1`
+- REST over HTTP — JSON request/response bodies
+- UUID identifiers (v7) for resources
+- Standard error envelope returned from `@RestControllerAdvice`
+- Pagination for list endpoints
+
+## Published contracts
+
+| Feature | Contract |
+|---------|----------|
+| User Registration | `specs/001-user-registration/contracts/registration-api.yaml` |
+| User Authentication | `specs/002-user-authentication/contracts/auth-api.yaml` |
+| Create Wallet | `specs/003-create-wallet/contracts/wallet-api.yaml` |
+| Deposit Funds | `specs/004-deposit-funds/contracts/deposit-api.yaml` |
+| Manage Wallet | `specs/009-manage-wallet/contracts/manage-wallet-api.yaml` |
+| BFF | `specs/010-bff/contracts/bff-api.yaml` |
+
+## Domain events
+
+Events are versioned JSON Schema contracts published to Kafka:
+
+| Event | Topic |
+|-------|-------|
+| `UserRegistered` | `aegis.identity.user.registered` |
+| `UserAuthenticated` | `aegis.identity.user.authenticated` |
+| `UserAccountLocked` | `aegis.identity.user.account.locked` |
+| `WalletCreated` | `aegis.wallet.wallet.created` |
+| `FundsDeposited` | `aegis.wallet.funds.deposited` |
+| `WalletBalanceAdjusted` | `aegis.wallet.wallet.balance.adjusted` |
+| `FraudAssessmentCompleted` | `aegis.fraud.assessment.completed` |
+
+Contracts are versioned with an explicit `schemaVersion` field so consumers evolve safely.

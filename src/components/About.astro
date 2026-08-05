@@ -1,0 +1,77 @@
+---
+import Section from './Section.astro';
+---
+
+<Section
+  id="about"
+  eyebrow="About"
+  title="Who built it"
+  subtitle="Aegis is my engineering laboratory — where I design, build and operate cloud-native, AI-powered platforms using the same principles expected in enterprise software."
+>
+  <div class="mt-10 grid gap-6 lg:grid-cols-[1fr_380px]">
+    <div class="reveal space-y-6 rounded-xl border border-white/5 bg-card p-8">
+      <h3 class="font-display text-sm font-semibold uppercase tracking-widest text-foreground">
+        Engineering philosophy
+      </h3>
+      <p class="text-muted leading-relaxed">
+        {`I don't write code to type. I design systems, orchestrate specialized AI agents and
+        deliver production value. Aegis is the proof: a payment platform architected, specified,
+        implemented, tested and documented by a virtual engineering team under human direction.`}
+      </p>
+      <p class="text-muted leading-relaxed">
+        {`The result is production-grade software that would take a traditional team weeks to
+        build — delivered in days, with the same or higher quality standards. The focus is
+        understanding the business domain, translating it into rigorous specifications, and
+        using AI as a force multiplier.`}
+      </p>
+
+      <blockquote class="border-l-2 border-l-primary pl-4 font-display text-lg text-foreground">
+        “Aegis is my engineering laboratory where I design, build and operate cloud-native,
+        AI-powered platforms using the same principles expected in enterprise software.”
+      </blockquote>
+
+      <div class="grid gap-3 sm:grid-cols-2">
+        <a
+          href="https://github.com/AlexAlvarezGallardo-GitHub"
+          target="_blank"
+          rel="noreferrer"
+          class="flex items-center justify-center gap-2 rounded-md border border-white/10 px-4 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/60 hover:text-accent"
+        >
+          GitHub
+        </a>
+        <a
+          href="https://www.linkedin.com/"
+          target="_blank"
+          rel="noreferrer"
+          class="flex items-center justify-center gap-2 rounded-md border border-white/10 px-4 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/60 hover:text-accent"
+        >
+          LinkedIn
+        </a>
+      </div>
+    </div>
+
+    <div class="reveal rounded-xl border border-white/5 bg-card p-8">
+      <h3 class="font-display text-sm font-semibold uppercase tracking-widest text-foreground">
+        Professional profile
+      </h3>
+      <dl class="mt-6 space-y-5">
+        <div>
+          <dt class="font-mono text-xs uppercase tracking-widest text-muted">Role</dt>
+          <dd class="mt-1 text-foreground">Software Engineer · Architect · AI Orchestrator</dd>
+        </div>
+        <div>
+          <dt class="font-mono text-xs uppercase tracking-widest text-muted">Focus</dt>
+          <dd class="mt-1 text-foreground">Distributed systems, fintech, platform engineering, AI-native development</dd>
+        </div>
+        <div>
+          <dt class="font-mono text-xs uppercase tracking-widest text-muted">Languages</dt>
+          <dd class="mt-1 font-mono text-sm text-foreground">Java · TypeScript · Angular · SQL</dd>
+        </div>
+        <div>
+          <dt class="font-mono text-xs uppercase tracking-widest text-muted">Platform</dt>
+          <dd class="mt-1 font-mono text-sm text-foreground">Kafka · Kubernetes · Argo CD · GitOps</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</Section>

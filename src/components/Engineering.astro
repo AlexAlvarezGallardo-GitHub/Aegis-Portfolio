@@ -1,0 +1,43 @@
+---
+import Section from './Section.astro';
+import { engineeringDecisions } from '../data/site';
+---
+
+<Section
+  id="engineering"
+  eyebrow="Engineering"
+  title="Decisions, not technologies"
+  subtitle="Every technology in Aegis exists because of a documented decision. This section explains the why behind the stack."
+>
+  <div class="mt-10 grid gap-4 sm:grid-cols-2">
+    {
+      engineeringDecisions.map((d, i) => (
+        <div
+          class="reveal rounded-xl border border-white/5 bg-card p-6 transition-colors hover:border-primary/40"
+          style={`transition-delay: ${(i % 4) * 60}ms`}
+        >
+          <div class="flex items-start gap-4">
+            <span class="mt-0.5 shrink-0 font-mono text-sm font-bold text-primary">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <div>
+              <h3 class="font-display text-lg font-semibold text-foreground">{d.title}</h3>
+              <ul class="mt-3 space-y-2">
+                {
+                  d.points.map((p) => (
+                    <li class="flex items-start gap-2.5 text-sm text-muted">
+                      <svg class="mt-1 h-3.5 w-3.5 shrink-0 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                      {p}
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</Section>
