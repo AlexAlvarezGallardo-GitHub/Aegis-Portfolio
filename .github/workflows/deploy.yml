@@ -30,6 +30,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Fetch live GitHub metrics
+        run: |
+          mkdir -p src/data
+          curl -sfL -o src/data/github-metrics.json \
+            "https://raw.githubusercontent.com/AlexAlvarezGallardo-GitHub/Aegis/main/portfolio/public/data/github-metrics.json" \
+            || echo "metrics not available yet; dashboard will show placeholder"
+
       - name: Build
         run: npm run build
         env:
