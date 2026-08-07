@@ -4,7 +4,6 @@ inView(
   '.reveal',
   (el) => {
     el.classList.add('is-visible');
-    return () => el.classList.remove('is-visible');
   },
-  { amount: 0.2 }
+  { amount: 0.2, once: true }
 );
