@@ -31,16 +31,93 @@ jobs:
         run: npm ci
 
       - name: Fetch live GitHub metrics
+        env:
+          AEGIS_GITHUB_TOKEN: ${{ secrets.AEGIS_GITHUB_TOKEN }}
         run: |
+          set -u
           mkdir -p src/data
-          curl -sfL -o src/data/github-metrics.json \
-            "https://raw.githubusercontent.com/AlexAlvarezGallardo-GitHub/Aegis/main/portfolio/public/data/github-metrics.json" \
-            || echo "metrics not available yet; dashboard will show placeholder"
+          API="https://api.github.com/repos/AlexAlvarezGallardo-GitHub/Aegis"
+          AUTH=""
+          if [ -n "${AEGIS_GITHUB_TOKEN:-}" ]; then AUTH="Authorization: Bearer $AEGIS_GITHUB_TOKEN"; fi
+
+          # Commit count + last commit date (paginated)
+          COMMIT_COUNT=0
+          LAST_COMMIT=""
+          PAGE=1
+          while [ "$PAGE" -le 50 ]; do
+            BODY=$(curl -sfL -H "$AUTH" "$API/commits?per_page=100&page=$PAGE") || break
+            N=$(echo "$BODY" | jq 'length')
+            [ "$N" = "0" ] && break
+            COMMIT_COUNT=$((COMMIT_COUNT + N))
+            if [ -z "$LAST_COMMIT" ]; then
+              LAST_COMMIT=$(echo "$BODY" | jq -r '.[0].commit.committer.date // empty')
+            fi
+            [ "$N" -lt 100 ] && break
+            PAGE=$((PAGE + 1))
+          done
+
+          # Open and closed pull requests (paginated)
+          OPEN_PRS=0
+          PAGE=1
+          while [ "$PAGE" -le 10 ]; do
+            BODY=$(curl -sfL -H "$AUTH" "$API/pulls?state=open&per_page=100&page=$PAGE") || break
+            N=$(echo "$BODY" | jq 'length')
+            [ "$N" = "0" ] && break
+            OPEN_PRS=$((OPEN_PRS + N))
+            [ "$N" -lt 100 ] && break
+            PAGE=$((PAGE + 1))
+          done
+
+          CLOSED_PRS=0
+          PAGE=1
+          while [ "$PAGE" -le 50 ]; do
+            BODY=$(curl -sfL -H "$AUTH" "$API/pulls?state=closed&per_page=100&page=$PAGE") || break
+            N=$(echo "$BODY" | jq 'length')
+            [ "$N" = "0" ] && break
+            CLOSED_PRS=$((CLOSED_PRS + N))
+            [ "$N" -lt 100 ] && break
+            PAGE=$((PAGE + 1))
+          done
+
+          # Latest release (may not exist)
+          LATEST_RELEASE=""
+          REL=$(curl -sfL -H "$AUTH" "$API/releases/latest") && {
+            LATEST_RELEASE=$(echo "$REL" | jq -r '.tag_name // empty')
+          }
+
+          # Latest CI run for ci.yml
+          CI_STATUS="no runs yet"
+          LAST_CI_RUN=""
+          CI=$(curl -sfL -H "$AUTH" "$API/actions/workflows/ci.yml/runs?per_page=1") && {
+            RUN_COUNT=$(echo "$CI" | jq '.workflow_runs | length')
+            if [ "$RUN_COUNT" != "0" ]; then
+              CI_STATUS=$(echo "$CI" | jq -r '.workflow_runs[0].conclusion // .workflow_runs[0].status // "unknown"')
+              LAST_CI_RUN=$(echo "$CI" | jq -r '.workflow_runs[0].created_at // empty')
+            fi
+          }
+
+          if [ -z "$LAST_COMMIT" ]; then
+            echo "::warning::Could not reach the GitHub API; dashboard will show 'Metrics temporarily unavailable'."
+            exit 0
+          fi
+
+          jq -n \
+            --arg repository "Aegis" \
+            --arg lastCommit "$LAST_COMMIT" \
+            --argjson commitCount "$COMMIT_COUNT" \
+            --argjson openPullRequests "$OPEN_PRS" \
+            --argjson closedPullRequests "$CLOSED_PRS" \
+            --arg latestRelease "$LATEST_RELEASE" \
+            --arg ciStatus "$CI_STATUS" \
+            --arg lastCiRun "$LAST_CI_RUN" \
+            --arg generatedAt "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            '{repository: $repository, lastCommit: $lastCommit, commitCount: $commitCount, openPullRequests: $openPullRequests, closedPullRequests: $closedPullRequests, latestRelease: ($latestRelease | if . == "" then null else . end), ciStatus: $ciStatus, lastCiRun: $lastCiRun, generatedAt: $generatedAt}' \
+            > src/data/github-metrics.json
+          echo "Wrote src/data/github-metrics.json:"
+          cat src/data/github-metrics.json
 
       - name: Build
         run: npm run build
-        env:
-          AEGIS_GITHUB_TOKEN: ${{ secrets.AEGIS_GITHUB_TOKEN }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
