@@ -1,8 +1,8 @@
 export const platform = {
   name: 'Aegis',
-  tagline: 'AI-Native Financial Platform',
+  tagline: 'AI-Orchestrated Financial Reference Architecture',
   description:
-    'Enterprise-grade financial platform built with modern cloud architecture, distributed systems and AI orchestration.',
+    'Production-oriented financial reference architecture built with modern cloud architecture, distributed systems and AI-assisted engineering.',
   github: 'https://github.com/AlexAlvarezGallardo-GitHub/Aegis',
 };
 
@@ -29,8 +29,8 @@ export const services = [
   },
   {
     name: 'Fraud',
-    status: 'Planned',
-    description: 'Real-time fraud scoring, rule engine and ML pipeline.',
+    status: 'Built',
+    description: 'Real-time risk scoring and a rules engine protecting every transaction.',
   },
   {
     name: 'Notifications',
@@ -40,12 +40,12 @@ export const services = [
   {
     name: 'Audit',
     status: 'Built',
-    description: 'Immutable, cryptographically-linked audit trail.',
+    description: 'Immutable, append-only audit trail for financial events.',
   },
   {
     name: 'Reporting',
-    status: 'Built',
-    description: 'Analytics, dashboards and exports.',
+    status: 'Partial',
+    description: 'Balance projections and event-driven analytics (partial).',
   },
 ];
 
@@ -142,7 +142,7 @@ export const infrastructure = [
   { name: 'Containerization', tool: 'Docker multi-stage, distroless images' },
   { name: 'Container Registry', tool: 'GHCR with immutable image tags' },
   { name: 'Orchestration', tool: 'Kubernetes + Helm, base and environment overlays' },
-  { name: 'Deployment Strategy', tool: 'GitOps via Argo CD — no manual deploys' },
+  { name: 'Deployment Strategy', tool: 'GitOps via Argo CD — declarative DEV app-of-apps (one-time bootstrap)' },
   { name: 'Secrets Management', tool: 'Kubernetes secrets + gitleaks pre-commit' },
   { name: 'Health Checks', tool: 'Actuator endpoints verified on deploy' },
   { name: 'Automatic Releases', tool: 'Automated release workflow' },
@@ -153,7 +153,7 @@ export const security = [
   'RBAC role-based access control',
   'BCrypt password hashing (cost ≥ 10)',
   'CSRF protection and security headers (OWASP)',
-  'Immutable, cryptographically-linked audit logs',
+  'Immutable, append-only audit logs (hash-chaining on roadmap)',
   'Secret scanning — Gitleaks, Trivy, CodeQL',
   'Software supply chain — Cosign signing, SBOM (Syft)',
   'Dependency automation — Dependabot / Renovate',
@@ -209,9 +209,11 @@ export const roadmap = [
       'Identity Service — full hexagonal stack',
       'BFF Service — session security',
       'Wallet Service — ledger and idempotency',
+      'Fraud Service — risk scoring and rules engine',
+      'Audit Service — append-only event trail',
       'Transactional outbox on Kafka',
       'CI/CD with four parallel quality gates',
-      'GitOps foundation with Argo CD',
+      'GitOps foundation with Argo CD and coverage for all six services',
       'Helm charts and environment overlays',
       'Observability stack (OTel, Tempo, Prometheus, Loki, Grafana)',
       'Security tooling (Trivy, CodeQL, Cosign, Dependabot)',
@@ -220,9 +222,9 @@ export const roadmap = [
   {
     category: 'In Progress',
     items: [
-      'Fraud detection rules engine',
+      'Reporting Service — analytics and dashboards',
+      'Audit trail hardening — hash chaining',
       'Notification delivery',
-      'Audit trail hardening',
     ],
   },
   {
@@ -240,7 +242,7 @@ export const roadmap = [
     items: [
       'External Secrets / HashiCorp Vault',
       'DORA metrics and ephemeral environments',
-      'AI-native agent orchestration at runtime',
+      'AI agent orchestration at runtime',
     ],
   },
 ];

@@ -9,38 +9,38 @@ const modules = [
   },
   {
     name: 'Payments',
-    description: 'Secure payment flows with reconciliation, idempotency and 3-D Secure readiness.',
+    description: 'Secure payment flows with reconciliation, idempotency and 3-D Secure — on the roadmap, not yet implemented.',
     icon: 'P',
   },
   {
     name: 'Fraud Detection',
-    description: 'Real-time risk scoring and rules engine protecting every transaction.',
+    description: 'Real-time risk scoring and a rules engine protecting every transaction.',
     icon: 'F',
   },
   {
     name: 'Notifications',
-    description: 'Email, SMS and push delivery with templating and tracking.',
+    description: 'Email, SMS and push delivery with templating and tracking — on the roadmap, not yet implemented.',
     icon: 'N',
   },
   {
     name: 'Audit',
-    description: 'Immutable, cryptographically-linked audit trail for every financial event.',
+    description: 'Immutable, append-only audit trail for every financial event.',
     icon: 'A',
   },
   {
     name: 'Reporting',
-    description: 'Analytics, dashboards and exportable insights for operations and finance.',
+    description: 'Balance projections and event-driven analytics — partial implementation.',
     icon: 'R',
   },
 ];
 
 const capabilities = [
-  'Multi-tenant financial platform',
   'Event-driven, asynchronous architecture',
   'Idempotency and ledger integrity by design',
   'Role-based access control',
   'Enterprise observability built in',
-  'GitOps delivery with zero manual deploys',
+  'Declarative GitOps delivery from a single app-of-apps',
+  'Single-tenant by design — multi-tenancy on the roadmap',
 ];
 ---
 
@@ -48,7 +48,7 @@ const capabilities = [
   id="platform"
   eyebrow="Platform"
   title="What is Aegis?"
-  subtitle="A digital payment platform designed for fintech scale and delivered with enterprise rigor. Before the technology — the product."
+  subtitle="A digital payment reference architecture designed for fintech scale and delivered with engineering rigor. Before the technology — the product."
 >
   <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
     {
