@@ -7,25 +7,27 @@ const topo = `
 graph TB
     ANG["Angular 22 SPA"]
     BFF["BFF Service\\nRedis session store"]
-    GW["API Gateway"]
     ID["Identity Service"]
     WA["Wallet Service"]
-    PAY["Payment Service"]
     KAFKA["Kafka\\nEvent Bus"]
     FR["Fraud Service"]
-    NO["Notification Service"]
     AU["Audit Service"]
+    RE["Reporting Service"]
+    PAY["Payment Service\\n(planned)"]
+    NO["Notification Service\\n(planned)"]
 
     ANG --> BFF
-    BFF --> GW
-    GW --> ID & WA & PAY
-    ID & WA & PAY --> KAFKA
-    KAFKA --> FR & NO & AU
+    BFF --> ID & WA
+    ID & WA --> KAFKA
+    KAFKA --> FR & AU & RE
+    PAY -.->|roadmap| KAFKA
+    NO -.->|roadmap| KAFKA
 
     style ANG fill:#18181b,stroke:#d4af37
     style BFF fill:#18181b,stroke:#d4af37
-    style GW fill:#18181b,stroke:#d4af37
     style KAFKA fill:#111113,stroke:#e6c15a,stroke-width:2px
+    style PAY stroke-dasharray:4 3
+    style NO stroke-dasharray:4 3
 `;
 
 const hexagonal = `
@@ -91,7 +93,7 @@ const statusColor = (status: string) =>
   id="architecture"
   eyebrow="Architecture"
   title="How it is architected"
-  subtitle="Six services, one event backbone, zero shared databases. Each bounded context owns its data and communicates through Kafka. This is the architecture of the real, running platform."
+  subtitle="Six services, one event backbone, zero shared databases. Each bounded context owns its data and communicates through Kafka. This is the architecture of the implemented reference platform."
 >
   <div class="mt-10 grid gap-8 lg:grid-cols-[1fr_380px]">
     <div class="reveal">
