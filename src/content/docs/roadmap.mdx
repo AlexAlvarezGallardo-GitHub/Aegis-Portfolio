@@ -11,6 +11,8 @@ Aegis evolves continuously. This page tracks the platform's trajectory.
 - Identity Service — full hexagonal stack, 100% domain test coverage
 - BFF Service — session security, JWT proxy, CSRF protection
 - Wallet Service — digital wallets, idempotent ledger operations
+- Fraud Service — rule-based real-time risk assessment
+- Audit Service — immutable audit trail for platform events
 - Transactional outbox on Kafka
 - CI/CD with four parallel quality gates
 - GitOps foundation with Argo CD
@@ -20,13 +22,12 @@ Aegis evolves continuously. This page tracks the platform's trajectory.
 
 ## In progress
 
-- Fraud detection rules engine
-- Notification delivery
-- Audit trail hardening
+- Payments track — transfers, merchant payments and refunds (UC-005–UC-007, [epic #246](https://github.com/AlexAlvarezGallardo-GitHub/Aegis/issues/246))
+- Reporting projections — analytics, dashboards and exports
 
 ## Planned
 
-- Payment processing and 3-D Secure
+- Notification Service — email, SMS and push with delivery tracking
 - API Gateway with rate limiting and circuit breakers
 - Argo Rollouts — blue/green and canary deployments
 - KEDA autoscaling
