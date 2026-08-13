@@ -21,42 +21,43 @@ export const evidenceGroups: EvidenceGroup[] = [
         src: 'evidence/app/01-login-filled.png',
         title: 'Sign in',
         caption:
-          'Identity service — credentials verified against BCrypt-hashed passwords, session secured with JWT + HttpOnly cookies.',
+          'Identity service — credentials verified against BCrypt-hashed passwords, session secured with JWT + HttpOnly cookies. Branded zinc/gold dark UI with the real Aegis logo.',
       },
       {
-        src: 'evidence/app/02-wallets-premium.png',
+        src: 'evidence/app/02-wallets.png',
         title: 'Wallet list',
         caption:
-          'User wallets rendered by the Angular SPA, served by the Wallet service REST API.',
+          'Wallet list with KPI cards and business info (no raw IDs) rendered by the Angular SPA, served by the Wallet service REST API.',
       },
       {
-        src: 'evidence/app/03-wallet-detail-deposit-section.png',
+        src: 'evidence/app/03-wallet-detail.png',
         title: 'Wallet detail',
         caption:
-          'Account view with balance and the deposit action surfaced from the ledger aggregate.',
+          'Dedicated wallet page — back navigation, currency/status header, balance overview and action tabs over the ledger aggregate.',
       },
       {
-        src: 'evidence/app/04-deposit-form-filled.png',
-        title: 'Deposit form',
+        src: 'evidence/app/04-deposit-modal.png',
+        title: 'Deposit modal',
         caption:
-          'Deposit form — amount, currency, source and a unique client reference for idempotency.',
+          'Deposit dialog — amount, source and a unique client reference for idempotency, with the deposit action on the balance overview.',
       },
       {
-        src: 'evidence/app/05-deposit-receipt.png',
-        title: 'Deposit receipt',
+        src: 'evidence/app/05-deposit-success-toast.png',
+        title: 'Deposit confirmed',
         caption:
-          'Confirmed deposit — the ledger is updated atomically and a domain event is written to the outbox.',
+          'Confirmed deposit — the ledger is updated atomically, a domain event is written to the outbox and the success toast surfaces it.',
       },
       {
         src: 'evidence/app/06-dup-reference-rejected.png',
         title: 'Duplicate reference rejected',
         caption:
-          'Reusing a deposit reference is rejected — idempotency is enforced in the domain, not the UI.',
+          'Reusing a deposit reference is rejected — idempotency is enforced in the domain, not the UI, and surfaced as an error toast.',
       },
       {
         src: 'evidence/app/07-create-wallet-form.png',
         title: 'Create wallet',
-        caption: 'Wallet creation form — currency selection in a hexagonal, contract-first API.',
+        caption:
+          'Slide-over wallet creation panel — currency selection in a hexagonal, contract-first API.',
       },
       {
         src: 'evidence/app/08-two-wallets.png',
@@ -84,6 +85,50 @@ export const evidenceGroups: EvidenceGroup[] = [
         src: 'evidence/app/12-kafka-fraud-topic.png',
         title: 'fraud topic',
         caption: 'Fraud-related events routed for real-time scoring and rules evaluation.',
+      },
+    ],
+  },
+  {
+    id: 'toast',
+    label: 'Toast notification system',
+    note: 'Bottom-right toasts — compact, hierarchical, stackable.',
+    items: [
+      {
+        src: 'evidence/toast/01-toast-creation.png',
+        title: 'Wallet created',
+        caption:
+          'JPY wallet created successfully — user-facing message with no technical IDs.',
+      },
+      {
+        src: 'evidence/toast/02-toast-deposit.png',
+        title: 'Deposit completed',
+        caption:
+          'Deposit toast with amount, source and a View transaction action for drill-down.',
+      },
+      {
+        src: 'evidence/toast/03-toast-error.png',
+        title: 'Error toast',
+        caption:
+          'Unable to complete deposit — duplicate reference surfaced in context with a clear error.',
+      },
+      {
+        src: 'evidence/toast/04-toast-stack.png',
+        title: 'Toast stacking',
+        caption:
+          'Vertical stacking keeps message hierarchy readable when multiple events land together.',
+      },
+    ],
+  },
+  {
+    id: 'uuid',
+    label: 'Technical details',
+    note: 'Raw IDs kept out of the primary UI.',
+    items: [
+      {
+        src: 'evidence/uuid/technical-details-dialog.png',
+        title: 'Technical details dialog',
+        caption:
+          'UUIDs only under More actions > Technical details, with copy support — clean, user-facing wallet screens.',
       },
     ],
   },
